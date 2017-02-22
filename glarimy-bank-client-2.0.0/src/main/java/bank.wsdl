@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:b="http://www.glarimy.com/bank"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns="http://www.w3.org/2001/XMLSchema" name="BankService"
+	targetNamespace="http://www.glarimy.com/bank">
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:b="http://www.glarimy.com/bank"
+			targetNamespace="http://www.glarimy.com/bank">
+			<element name='no' type='int' />
+			<element name='balance' type='double' />
+			<element name='name' type="string" />
+			<element name='phoneNumber' type='long' />
+			<element name='type' type='string' />
+			<element name='amount' type='double' />
+			<element name='customer'>
+				<complexType>
+					<sequence>
+						<element ref="b:name" />
+						<element ref="b:phoneNumber" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name='transaction'>
+				<complexType>
+					<sequence>
+						<element ref="b:type" />
+						<element ref="b:amount" />
+						<element ref="b:balance" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name='account'>
+				<complexType>
+					<sequence>
+						<element ref="b:no" />
+						<element ref="b:balance" />
+						<element ref="b:customer" />
+						<element ref="b:transaction" minOccurs="0" maxOccurs="unbounded" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name="openAccountFor">
+				<complexType>
+					<sequence>
+						<element ref="b:customer" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name="openAccountForResponse">
+				<complexType>
+					<sequence>
+						<element ref="b:no" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name="deposit">
+				<complexType>
+					<sequence>
+						<element ref="b:no" />
+						<element ref="b:amount" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name="depositResponse">
+				<complexType>
+					<sequence>
+						<element ref="b:balance" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name="withdraw">
+				<complexType>
+					<sequence>
+						<element ref="b:no" />
+						<element ref="b:amount" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name="withdrawResponse">
+				<complexType>
+					<sequence>
+						<element ref="b:balance" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name="find">
+				<complexType>
+					<sequence>
+						<element ref="b:no" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name="findResponse">
+				<complexType>
+					<sequence>
+						<element ref="b:account" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name="history">
+				<complexType>
+					<sequence>
+						<element ref="b:no" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name="historyResponse">
+				<complexType>
+					<sequence>
+						<element ref="b:transaction" minOccurs="0" maxOccurs="unbounded" />
+					</sequence>
+				</complexType>
+			</element>
+		</schema>
+	</wsdl:types>
+	<wsdl:message name="openAccountFor">
+		<wsdl:part element="b:openAccountFor" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="openAccountForResponse">
+		<wsdl:part element="b:openAccountForResponse" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="deposit">
+		<wsdl:part element="b:deposit" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="depositResponse">
+		<wsdl:part element="b:depositResponse" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="withdraw">
+		<wsdl:part element="b:withdraw" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="withdrawResponse">
+		<wsdl:part element="b:withdrawResponse" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="history">
+		<wsdl:part element="b:history" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="historyResponse">
+		<wsdl:part element="b:historyResponse" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="find">
+		<wsdl:part element="b:find" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="findResponse">
+		<wsdl:part element="b:findResponse" name="parameters" />
+	</wsdl:message>
+	<wsdl:portType name="Bank">
+		<wsdl:operation name="openAccountFor">
+			<wsdl:input message="b:openAccountFor" />
+			<wsdl:output message="b:openAccountForResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="deposit">
+			<wsdl:input message="b:deposit" />
+			<wsdl:output message="b:depositResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="withdraw">
+			<wsdl:input message="b:withdraw" />
+			<wsdl:output message="b:withdrawResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="find">
+			<wsdl:input message="b:find" />
+			<wsdl:output message="b:findResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="history">
+			<wsdl:input message="b:history" />
+			<wsdl:output message="b:historyResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="bankSOAP" type="b:Bank">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="openAccountFor">
+			<soap:operation soapAction="http://www.glarimy.com/bank/openAccountFor" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="deposit">
+			<soap:operation soapAction="http://www.glarimy.com/bank/deposit" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="withdraw">
+			<soap:operation soapAction="http://www.glarimy.com/bank/withdraw" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="find">
+			<soap:operation soapAction="http://www.glarimy.com/bank/find" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="history">
+			<soap:operation soapAction="http://www.glarimy.com/bank/history" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="BankService">
+		<wsdl:port binding="b:bankSOAP" name="BankPort">
+			<soap:address location="http://localhost:80/lib" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
